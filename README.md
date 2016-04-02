@@ -3,6 +3,9 @@
 ##first things first:
 
 OSX:
+*install xcode command-line tools
+
+`xcode-select --install`
 
 * install homebrew:
 
@@ -23,3 +26,13 @@ or
 `pip install --wheel pyzmq`
 or
 `pip install pyzmq`
+
+###other stuff we might use at some point maybe
+
+* scrapy:
+
+`pip install scrapy`
+
+* flask:
+
+`pip install flask`

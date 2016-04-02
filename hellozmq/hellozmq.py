@@ -9,6 +9,7 @@ import zmq
 #import zhelpers
 
 def serviceA(context=None):
+    #reuse context if it exists, otherwise make a new one
     context = context or zmq.Context.instance()
     service = context.socket(zmq.DEALER)
 
@@ -32,6 +33,7 @@ def serviceA(context=None):
             break
 
 def serviceB(context=None):
+    #reuse context if it exists, otherwise make a new one
     context = context or zmq.Context.instance()
     service = context.socket(zmq.DEALER)
 
@@ -55,12 +57,13 @@ def serviceB(context=None):
             break
 
 def frontendClient(context=None):
-    #randomly request either service A or service B
+    #reuse context if it exists, otherwise make a new one
     context = context or zmq.Context.instance()
     socket = context.socket(zmq.REQ)
     socket.connect("tcp://localhost:5559")
     socket.RCVTIMEO = 2000 #we will only wait 2s for a reply
     while True:
+        #randomly request either service A or service B
         serviceRequest = random.choice([b'Service A',b'Service B'])
         with myLock:
             print "client wants %s" % serviceRequest
@@ -91,7 +94,7 @@ def main():
     # Socket facing services
     backend  = context.socket(zmq.ROUTER)
     backend.bind("tcp://*:5560")
-    print "zmq proxy running"
+    print "zmq server running on localhost:5559/5560"
 
     #now setup our client and services
     Thread(target=serviceA).start()
