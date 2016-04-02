@@ -1,3 +1,4 @@
+#!/usr/bin/env/python
 import time
 import random
 from threading import Thread, Lock
@@ -23,6 +24,8 @@ def serviceA(context=None):
             #do some work
             time.sleep(random.uniform(0,0.5))
             service.send(b"Service A did your laundry")
+        elif message == "END":
+            break
         else:
             with myLock:
                 print "the server has the wrong identities!"
@@ -44,6 +47,8 @@ def serviceB(context=None):
             #do some work
             time.sleep(random.uniform(0,0.5))
             service.send(b"Service B cleaned your room")
+        elif message == "END":
+            break
         else:
             with myLock:
                 print "the server has the wrong identities!"
@@ -54,13 +59,19 @@ def frontendClient(context=None):
     context = context or zmq.Context.instance()
     socket = context.socket(zmq.REQ)
     socket.connect("tcp://localhost:5559")
-
+    socket.RCVTIMEO = 2000 #we will only wait 2s for a reply
     while True:
         serviceRequest = random.choice([b'Service A',b'Service B'])
         with myLock:
             print "client wants %s" % serviceRequest
         socket.send(serviceRequest)
-        reply = socket.recv()
+        try:
+            reply = socket.recv()
+        except Exception as e:
+            print "client timed out"
+            break
+        if not reply:
+            break
         with myLock:
             print "Client got reply: "
             print reply
@@ -80,28 +91,6 @@ def main():
     # Socket facing services
     backend  = context.socket(zmq.ROUTER)
     backend.bind("tcp://*:5560")
-
-    #equivalent to request reply broker from zguide.zeromq.org
-    #zmq.proxy(frontend, backend)
-
-    """ i.e., zmq.proxy is equivalent to: """
-    # # Initialize poll set
-    # poller = zmq.Poller()
-    # poller.register(frontend, zmq.POLLIN)
-    # poller.register(backend, zmq.POLLIN)
-    #
-    # # Switch messages between sockets
-    # while True:
-    #     socks = dict(poller.poll())
-    #
-    #     if socks.get(frontend) == zmq.POLLIN:
-    #         message = frontend.recv_multipart()
-    #         backend.send_multipart(message)
-    #
-    #     if socks.get(backend) == zmq.POLLIN:
-    #         message = backend.recv_multipart()
-    #         frontend.send_multipart(message)
-
     print "zmq proxy running"
 
     #now setup our client and services
@@ -110,10 +99,9 @@ def main():
     #let the services fire up before the client starts requesting
     time.sleep(1)
     Thread(target=frontendClient).start()
-    #print "started threads"
 
 
-    while True:
+    for _ in range(6):
         clientServiceRequest = frontend.recv_multipart()
         clientIdentity = clientServiceRequest[0]
         if clientServiceRequest[2] == 'Service A':
@@ -123,7 +111,6 @@ def main():
                 print "Server got reply:"
                 print reply
             frontend.send_multipart([clientIdentity,b'',reply])
-            print
         elif clientServiceRequest[2] == 'Service B':
             backend.send_multipart([b'B',b'Service B']) #[identity,data]
             identity,reply = backend.recv_multipart()
@@ -131,8 +118,9 @@ def main():
                 print "Server got reply:"
                 print reply
             frontend.send_multipart([clientIdentity,b'',reply])
-            print
 
+    backend.send_multipart([b'A',b'END'])
+    backend.send_multipart([b'B',b'END'])
     # We never get here...
     frontend.close()
     backend.close()
