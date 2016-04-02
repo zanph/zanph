@@ -3,6 +3,7 @@
 ##first things first:
 
 OSX:
+
 *install xcode command-line tools
 
 `xcode-select --install`

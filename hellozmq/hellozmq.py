@@ -124,7 +124,8 @@ def main():
 
     backend.send_multipart([b'A',b'END'])
     backend.send_multipart([b'B',b'END'])
-    # We never get here...
+
+    #cleanup
     frontend.close()
     backend.close()
     context.term()
