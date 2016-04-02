@@ -28,6 +28,9 @@ or
 `pip install pyzmq`
 
 ###other stuff we might use at some point maybe
+* postgreSQL:
+
+`brew install postgreSQL`
 
 * scrapy:
 
