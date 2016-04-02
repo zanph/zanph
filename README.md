@@ -36,6 +36,10 @@ or
 
 `pip install scrapy`
 
+* requests:
+
+`pip install requests`
+
 * flask:
 
 `pip install flask`
