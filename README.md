@@ -4,7 +4,7 @@
 
 OSX:
 
-*install xcode command-line tools
+* install xcode command-line tools
 
 `xcode-select --install`
 
