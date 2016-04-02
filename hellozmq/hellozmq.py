@@ -6,7 +6,7 @@ myLock = Lock()
 
 import zmq
 
-import zhelpers
+#import zhelpers
 
 def serviceA(context=None):
     context = context or zmq.Context.instance()
