@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1">
+    <title>yelp roulette</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <!-- jQuery library -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+   <!-- Latest compiled JavaScript -->
+   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+   <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+  </head>
+</html>
+
+
+
+<body>
+   <div class="container-fluid" id="canvas">
+     <div class="well" id="body-well">
+
+       <button class="btn btn-lg navbar-btn" id="menu-btn">
+         <span class="glyphicon glyphicon-menu-hamburger"></span>
+       </button>
+
+       <button class="btn btn-lg navbar-btn" id="menu-btn">
+         <span class="glyphicon glyphicon-user"></span>
+       </button>
+
+       <button class="btn btn-lg navbar-btn" id="menu-btn">
+         <span class="glyphicon glyphicon-question-sign"></span>
+       </button>
+
+       <div class="row">
+         <h2 class="text-center text-primary">find me something!</h3>
+       </div>
+       <div class="row">
+         <form>
+           <fieldset class="form-group">
+             <label for="formGroupExampleInput">Location</label>
+             <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Logan Square, Helsinki, Jackson CTA Blue Line">
+           </fieldset>
+           <fieldset class="form-group">
+             <label for="formGroupExampleInput2">Description</label>
+             <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Ex. bars, Greek food, museums">
+           </fieldset>
+           <fieldset class="form-group">
+             <select class="c-select">
+               <option selected>When are you going?</option>
+               <option value="Morning">Morning</option>
+               <option value="Afternoon">Afternoon</option>
+               <option value="Evening">Evening</option>
+             </select>
+           </fieldset>
+           <div class="span12">
+             <button class="btn btn-success btn-lg">Go!</button>
+           </div>
+         </form>
+       </div>
+     </div>
+   </div>
+</body>
