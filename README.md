@@ -28,6 +28,19 @@ or
 or
 `pip install pyzmq`
 
+
+###using the flask site with virtual env:
+
+* install virtual env
+ 
+`pip install venv`
+
+there is a virtual env folder `venv` in `/flaskroulette` with all necessary packages installed. to use it, do
+
+`. venv/bin/activate` from `/flaskroulette`.
+
+
+
 ###other stuff we might use at some point maybe
 * postgreSQL:
 
