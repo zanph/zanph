@@ -1,11 +1,48 @@
 #canvas{background-color: #555555;}
 
+#results{ display: none; }
+
+.container-fluid {
+    min-height: 100%;
+    position: absolute;
+    min-width: 100%;
+}
+/*.body-well {
+  position: absolute;
+  top: 50%;
+  left:50%;
+  transform: translate(-50%,-50%);
+}*/
+.center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 .well{
   background: #eeeeee;
+  height: 100%;
 }
+
+#body-well{ position: }
 
 .row{text-align: center;}
 
 h2{ margin: 2%; }
 
 .navbar-btn{background-color: #eeeeee;}
+
+.body-well{
+  background: #eeeeee;
+}
+.canvas{
+  background: #555555;
+}
+.result-well{
+  background: #bbbbbb;
+}
+.result-btn-row{
+  text-align: center;
+}
+.result-btn{
+  margin: 2%;
+}

@@ -8,8 +8,9 @@ containing your desired configuration
 app.config.from_envvar('ROULETTE_SETTINGS', silent=True)
 
 @app.route('/')
-def hello_world():
-    return 'Hello World!'
+def index(name=None):
+    return render_template('layout.html',name=name)
+
 
 if __name__ == '__main__':
     app.debug = True

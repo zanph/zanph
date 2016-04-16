@@ -8,58 +8,174 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <!-- jQuery library -->
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="{{url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
+   <!-- jQuery form plugin-->
+   <script src="http://malsup.github.com/jquery.form.js"></script>
    <!-- Latest compiled JavaScript -->
    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+   <script>
+      // wait for the DOM to be loaded
+      $(document).ready(function() {
+         // $("#search_form").submit(function() {
+         //    $.ajax({
+         //     type: "GET",
+         //     url: "mail.php",
+         //     data: $(this).serialize(),
+         //     success: function() {
+         //       $('.simple-sucess').fadeIn(100).show();
+         //       $('.contact_form').fadeOut(100).hide();
+         //       $('.simple_error').fadeOut(100).hide();
+         //
+         //       }
+         //    })
+         //  })
+
+         // function buttonToggle(where, pval, nval, div1) {
+         // var div1Name = div1;
+         // var table1 = document.getElementById(div1Name);
+         //var x = $("#submit-btn").val();
+         // if (x == 'Results')
+         // {
+         //    where.addClass()
+         // }
+         // else
+         // {
+         //    where.title = 'Show ';
+         // }
+         // where.value = (where.value == pval) ? nval : pval;
+         // table1.style.display = (table1.style.display == 'block') ? 'none' : 'block';
+         // }
+         var savedHome;
+         var savedResults;
+         $("#submit-btn").click(function () {
+            savedHome = $("#home").fadeOut("slow").replaceWith($("#results").fadeIn("slow").show());
+         });
+         // $("#submit-btn").click(function () {
+         //    //code goes here to make api call parsed from input fields
+         //    //expect json with some predefined structure
+         //    //......
+         //    //......
+         //    //......
+         //    $("home").toggle();
+         //    $("#results").slideToggle("slow");
+         //     //$("#results").
+         // });
+         $("#refresh-btn").click(function () {
+            //code goes here to either
+            //a) use more results from original api call
+            //b) make another api call and get more results
+            //....
+            //....
+            //....
+            //$("#results").replaceWith( $("#results").fadeIn("slow").show() );
+         });
+         $("#restart-btn").click(function () {
+            //code goes here to either
+            //a) use more results from original api call
+            //b) make another api call and get more results
+            //....
+            //....
+            //....
+             savedResults = $("#results").fadeOut("slow").replaceWith(savedHome.show());
+         });
+
+      });
+   </script>
   </head>
-</html>
+
 
 
 
 <body>
-   <div class="container-fluid" id="canvas">
-     <div class="well" id="body-well">
+   <div class="container-fluid center canvas" id="home">
+      <div class="well" id="body-well">
 
-       <button class="btn btn-lg navbar-btn" id="menu-btn">
-         <span class="glyphicon glyphicon-menu-hamburger"></span>
-       </button>
+          <button class="btn btn-lg navbar-btn" id="menu-btn">
+            <span class="glyphicon glyphicon-menu-hamburger"></span>
+          </button>
 
-       <button class="btn btn-lg navbar-btn" id="menu-btn">
-         <span class="glyphicon glyphicon-user"></span>
-       </button>
+          <button class="btn btn-lg navbar-btn" id="menu-btn">
+            <span class="glyphicon glyphicon-user"></span>
+          </button>
 
-       <button class="btn btn-lg navbar-btn" id="menu-btn">
-         <span class="glyphicon glyphicon-question-sign"></span>
-       </button>
+          <button class="btn btn-lg navbar-btn" id="menu-btn">
+            <span class="glyphicon glyphicon-question-sign"></span>
+          </button>
 
-       <div class="row">
-         <h2 class="text-center text-primary">find me something!</h3>
-       </div>
-       <div class="row">
-         <form>
-           <fieldset class="form-group">
-             <label for="formGroupExampleInput">Location</label>
-             <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Logan Square, Helsinki, Jackson CTA Blue Line">
-           </fieldset>
-           <fieldset class="form-group">
-             <label for="formGroupExampleInput2">Description</label>
-             <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Ex. bars, Greek food, museums">
-           </fieldset>
-           <fieldset class="form-group">
-             <select class="c-select">
-               <option selected>When are you going?</option>
-               <option value="Morning">Morning</option>
-               <option value="Afternoon">Afternoon</option>
-               <option value="Evening">Evening</option>
-             </select>
-           </fieldset>
-           <div class="span12">
-             <button class="btn btn-success btn-lg">Go!</button>
-           </div>
-         </form>
-       </div>
+          <div class="row">
+            <h2 class="text-center text-primary">find me something!</h3>
+          </div>
+          <div class="row">
+            <form id="search_form">
+              <fieldset class="form-group">
+                <label for="location">Location</label>
+                <input type="text" class="form-control" id="locationInput" placeholder="Logan Square, Helsinki, Jackson CTA Blue Line">
+              </fieldset>
+              <fieldset class="form-group">
+                <label for="description">Description</label>
+                <input type="text" class="form-control" id="descriptionInput" placeholder="Ex. bars, Greek food, museums">
+              </fieldset>
+              <fieldset class="form-group">
+                <select class="c-select">
+                  <option selected>When are you going?</option>
+                  <option value="Morning">Morning</option>
+                  <option value="Afternoon">Afternoon</option>
+                  <option value="Evening">Evening</option>
+                </select>
+              </fieldset>
+            </form>
+            <div class="col-xs-12">
+             <button class="btn btn-success btn-lg" id="submit-btn">
+                 Go!
+             </button>
+            </div>
+          </div>
      </div>
-   </div>
+  </div>
+
+  <div class="container-fluid canvas" id="results">
+    <div class="well body-well">
+      <div class="row">
+        <h3 class="text-center text-info">
+          results
+        </h3>
+      </div>
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="well result-well">
+            <img class="img-responsive img-rounded center-block" src="http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/latest?cb=20061003200043" alt="white square">
+            <p class="text-center result-caption">Result name 1</p>
+            <!--<p class="text-center">Cross Street & Cross Street</p>-->
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="well result-well">
+            <img class="img-responsive img-rounded center-block" src="http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/latest?cb=20061003200043" alt="result well">
+            <p class="text-center">Result name 2</p>
+            <!--<p class="text-center">Cross Street & Cross Street</p>-->
+          </div>
+        </div>
+        <!--<div class="col-sm-4">
+          <div class="well result-well">
+            <img class="img-responsive img-rounded" src="http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/latest?cb=20061003200043" alt="result well">
+            <p class="text-center">Result name 3</p>
+            <p class="text-center">Cross Street & Cross Street</p>
+          </div>
+        </div>  -->
+      </div>
+      <div class="row result-btn-row">
+        <button class="btn btn-lg btn-danger result-btn" id="restart-btn">
+          <span class="glyphicon glyphicon-arrow-left"></span>
+        </button>
+        <button class="btn btn-lg btn-info result-btn" id="refresh-btn">
+          <span class="glyphicon glyphicon-refresh"></span>
+        </button>
+      </div>
+    </div>
+  </div>
 </body>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="{{url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
+</html>
