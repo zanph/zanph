@@ -4,6 +4,7 @@ import io
 from yelp.client import Client
 from yelp.oauth1_authenticator import Oauth1Authenticator
 import json
+import requests
 
 app = Flask(__name__)
 """
@@ -14,10 +15,15 @@ app.config.from_envvar('ROULETTE_SETTINGS', silent=True)
 
 @app.route('/')
 def index(name=None):
+    # payload = {'location':'wicker park',
+    #            'description':'coffee',
+    #            'time' : 3
+    #           }
+    # r = requests.get('https://127.0.0.1:5000/query',params=payload)
     return render_template('layout.html',name=name)
 
 @app.route('/query', methods='GET')
-def query:
+def query():
     error = None
     if request.method =='GET':
         if valid_request(request.form['location'],
@@ -35,9 +41,12 @@ def valid_request(location,description,time):
     """check if location,description, and time are set for a request"""
     return all([location,description,time])
 
-def fulfill_query_request():
+def fulfill_query_request(location, description, time):
     """use yelp api to fulfill a request"""
     client = authenticate_api()
+    print location
+    print description
+    print time
     if client is None:
         #handle error
         print "uh oh!"
@@ -51,7 +60,17 @@ def fulfill_query_request():
     #them
     response = client.search(location, **params)
     #do some work . . . . .
-    #return formatted json object
+    if response is None:
+        return None #todo handle error
+    response_dict = {}
+    response_keys = ['businesses','addresses',
+                           'phone numbers','ratings',
+                           'review counts']
+
+    response_values = []
+    for key in response_keys:
+        response_values.append(list(business.__dict__[key] for business in blist))
+    print response_values
 
 
 def authenticate_api():
