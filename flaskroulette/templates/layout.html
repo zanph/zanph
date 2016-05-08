@@ -17,20 +17,25 @@
    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
    <script>
       // wait for the DOM to be loaded
+
       $(document).ready(function() {
+         var cache = {};
+         function handleSubmit(params, callback){
+
+            if(!cache[params]){
+               cache[params] = $.getJSON(params[2],callback).promise();
+            }
+            cache[params].done(callback)
+         }
+         function displayResults(data){
+            console.log(JSON.stringify(data));
+         }
          $("#submit-btn").click(function () {
             var location = $("#locationInput").val();
             var description = $("#descriptionInput").val();
             var url = "http://127.0.0.1:5000/query?location="+
             location+"&description="+description+"&time=3";
-            businesses = {};
-            $.getJSON(url, function(data) {
-               console.log("getting json");
-               console.log(JSON.stringify(data,null,2));
-               // $.each(data, function(key, value) {
-               //    items[key] = value;
-               // });
-            });
+            handleSubmit([location, description, url], displayResults);
          });
       });
    </script>
