@@ -6,6 +6,9 @@ from yelp.oauth1_authenticator import Oauth1Authenticator
 import json
 import requests
 
+import pprint
+pp = pprint.PrettyPrinter(indent=2)
+
 app = Flask(__name__)
 """
 set environment variable $ROULETTE_SETTINGS to point to a file
@@ -61,20 +64,19 @@ def fulfill_query_request(location, description, time):
     #do some work . . . . .
     if response is None:
         return None #todo handle error
-
-    response_dict = {} #start from scratch for now but maybe later
-                       #store dict in cookies to reload for returning user
+    
+    response_dict = {}
     for business in response.businesses:
         if business.name in response_dict:
-            #skip if business is already in dictionary
             pass
         else:
-            #add to dictionary
             response_dict[business.name] = {}
-        response_dict[business.name]['address'] = business.location.display_address
-        response_dict[business.name]['phone number'] = business.phone
-        response_dict[business.name]['rating'] = business.rating
-        response_dict[business.name]['review count'] = business.review_count
+        response_dict[business.name]['address'] = business.location.display_address or "None provided"
+        response_dict[business.name]['phone number'] = business.phone or "None provided"
+        response_dict[business.name]['rating'] = business.rating or "None provided"
+        response_dict[business.name]['review count'] = business.review_count or "None provided"
+
+    pp.pprint(response_dict)
 
     #test our dictionary
     for name in response_dict.viewkeys():
@@ -84,8 +86,9 @@ def fulfill_query_request(location, description, time):
             print address_line
         print "phone: " + response_dict[name]['phone number']
 
-    #return something cool here
-    return render_template('layout.html')
+    #return response encoded as json
+    return json.dumps(response_dict)
+    #return render_template('layout.html')
 
 
 def authenticate_api():

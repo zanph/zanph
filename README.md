@@ -33,7 +33,7 @@ or
 
 * install virtual env
  
-`pip install venv`
+`pip install virtualenv`
 
 there is a virtual env folder `venv` in `/flaskroulette` with all necessary packages installed. to use it, do
 

@@ -18,77 +18,20 @@
    <script>
       // wait for the DOM to be loaded
       $(document).ready(function() {
-         // $("#search_form").submit(function() {
-         //    $.ajax({
-         //     type: "GET",
-         //     url: "mail.php",
-         //     data: $(this).serialize(),
-         //     success: function() {
-         //       $('.simple-sucess').fadeIn(100).show();
-         //       $('.contact_form').fadeOut(100).hide();
-         //       $('.simple_error').fadeOut(100).hide();
-         //
-         //       }
-         //    })
-         //  })
-
-         // function buttonToggle(where, pval, nval, div1) {
-         // var div1Name = div1;
-         // var table1 = document.getElementById(div1Name);
-         //var x = $("#submit-btn").val();
-         // if (x == 'Results')
-         // {
-         //    where.addClass()
-         // }
-         // else
-         // {
-         //    where.title = 'Show ';
-         // }
-         // where.value = (where.value == pval) ? nval : pval;
-         // table1.style.display = (table1.style.display == 'block') ? 'none' : 'block';
-         // }
-         var savedHome;
-         var savedResults;
          $("#submit-btn").click(function () {
-            savedHome = $("#home").fadeOut("slow").replaceWith($("#results").fadeIn("slow").show());
+            var location = $("#locationInput").val();
+            var description = $("#descriptionInput").val();
+            var url = "http://127.0.0.1:5000/query?location="+
+            location+"&description="+description+"&time=3";
+            businesses = {};
+            $.getJSON(url, function(data) {
+               console.log("getting json");
+               console.log(JSON.stringify(data,null,2));
+               // $.each(data, function(key, value) {
+               //    items[key] = value;
+               // });
+            });
          });
-         // $("#submit-btn").click(function () {
-         //    //code goes here to make api call parsed from input fields
-         //    //expect json with some predefined structure
-         //    //something like:
-         //    // *make api call and get results
-         //    // *save home using call above and then...
-         //    // *jquery/js to render results as html
-         //    //......
-         //    //......
-         //    //......
-         //    $("home").toggle();
-         //    $("#results").slideToggle("slow");
-         //     //$("#results").
-         // });
-         $("#refresh-btn").click(function () {
-            //code goes here to either
-            //a) use more results from original api call
-            //b) make another api call and get more results
-            //....
-            //....
-            //....
-            //$("#results").replaceWith( $("#results").fadeIn("slow").show() );
-         });
-         $("#restart-btn").click(function () {
-            //code goes here to either
-            //a) use more results from original api call
-            //b) make another api call and get more results
-            //e.g. something like:
-            // *use savedHome var to re-rerender original home page
-            // *use same js/jquery to render new html if user wants new/
-            //  different results
-            //....
-            //....
-            //....
-             savedResults = $("#results").fadeOut("slow").replaceWith(savedHome.show());
-         });
-
       });
    </script>
   </head>
@@ -154,6 +97,7 @@
         <div class="col-xs-6">
           <div class="well result-well">
             <img class="img-responsive img-rounded center-block" src="http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/latest?cb=20061003200043" alt="white square">
+	    <ul id="result-target1"></ul>
             <p class="text-center result-caption">Result name 1</p>
             <!--<p class="text-center">Cross Street & Cross Street</p>-->
           </div>
@@ -161,6 +105,7 @@
         <div class="col-xs-6">
           <div class="well result-well">
             <img class="img-responsive img-rounded center-block" src="http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/latest?cb=20061003200043" alt="result well">
+	    <ul id="result-target2"></ul>
             <p class="text-center">Result name 2</p>
             <!--<p class="text-center">Cross Street & Cross Street</p>-->
           </div>
